@@ -1,16 +1,17 @@
 # VSD_TCL_PROGRAMMING_WORKSHOP
 
-<img width="1920" height="1078" alt="image" src="https://github.com/user-attachments/assets/6cec53dc-69d5-4241-ba8d-5e9f875dfded" />
 
-## DAY 1:  Creating a TCL command and pass .csv file from UNIX shell to tcl script
+
+## DAY 1:  Creating a TCL command and design.csv file from UNIX shell to tcl script
 
 ## Objective
 
 The goal of this day is to **understand how a TCL-based automation flow can process design data from an Excel/CSV input**, synthesize it using **Yosys**, and perform **timing analysis with OpenTimer** — all wrapped inside the **VSDSYNTH Toolbox**.
 
-<img width="1390" height="705" alt="image" src="https://github.com/user-attachments/assets/1d80afb3-0ee1-446d-a149-0f77a66e6e62" />
-<img width="1390" height="705" alt="image" src="https://github.com/user-attachments/assets/69f630fb-1a29-4c02-b101-3397f670b793" />
-<img width="1134" height="570" alt="image" src="https://github.com/user-attachments/assets/7c3d91de-71c9-4aa5-9e5f-d3a256066c02" />
+<img width="1597" height="805" alt="Screenshot 2025-10-30 220154" src="https://github.com/user-attachments/assets/8744067e-7b8f-4aff-b41f-c66c0380024d" />
+
+<img width="1607" height="881" alt="image" src="https://github.com/user-attachments/assets/e4955814-0afd-41fc-9dfd-679dad9af882" />
+
 
 ### Scenario 1
 
