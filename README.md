@@ -8,15 +8,26 @@
 
 The goal of this day is to **understand how a TCL-based automation flow can process design data from an Excel/CSV input**, synthesize it using **Yosys**, and perform **timing analysis with OpenTimer** — all wrapped inside the **VSDSYNTH Toolbox**.
 
-<img width="1597" height="805" alt="Screenshot 2025-10-30 220154" src="https://github.com/user-attachments/assets/8744067e-7b8f-4aff-b41f-c66c0380024d" />
-
 <img width="1607" height="881" alt="image" src="https://github.com/user-attachments/assets/e4955814-0afd-41fc-9dfd-679dad9af882" />
 
+<img width="1597" height="805" alt="Screenshot 2025-10-30 220154" src="https://github.com/user-attachments/assets/8744067e-7b8f-4aff-b41f-c66c0380024d" />
 
 ### Scenario 1
 
 user doesnot provide the .csv file 
-<img width="1113" height="634" alt="image" src="https://github.com/user-attachments/assets/14f47d0e-d1fe-4dde-9059-1dffe4b33f5d" />
+
+#### Overview
+
+In the VDH-FLOW synthesis automation suite, the .csv file is a required input that defines:
+
+-> RTL source file paths
+-> Library and constraint locations
+-> Top module name
+-> Synthesis configuration parameters
+
+If the user runs the script without providing the .csv file, the flow cannot start.
+To handle this, VDH-FLOW includes a built-in check to ensure a valid configuration file is passed.
+
 
 ### Scenario 2:
 user provides the name of .csv file but it doesnot exist 
