@@ -20,10 +20,7 @@ user doesnot provide the .csv file
 
 In the VDH-FLOW synthesis automation suite, the .csv file is a required input that defines:
 
--> RTL source file paths
--> Library and constraint locations
--> Top module name
--> Synthesis configuration parameters
+-> RTL source file paths, Library and constraint locations, Top module name, Synthesis configuration parameters.
 
 If the user runs the script without providing the .csv file, the flow cannot start.
 To handle this, VDH-FLOW includes a built-in check to ensure a valid configuration file is passed.
