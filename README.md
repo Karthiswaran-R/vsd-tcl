@@ -75,7 +75,7 @@ tclsh my_synth.tcl $argv[1]
 
 This stage focuses on **input preparation and validation** before synthesis.
 
-#### 🛠️ Tasks Performed:
+#### Tasks Performed:
 1. **Variable Extraction**  
    - Reads the design configuration CSV file.  
    - Extracts paths and parameters to dynamically create TCL-accessible variables.  
@@ -125,13 +125,13 @@ This stage focuses on **input preparation and validation** before synthesis.
 
 This phase automates the **conversion of CSV-based timing constraints** into **SDC** format.
 
-#### 🧠 Core Learning Goals:
+#### Core Learning Goals:
 - Parse and categorize data from the constraints CSV file.  
 - Create clock definitions with accurate timing parameters.  
 - Identify and process input/output signal constraints.  
 - Automatically generate valid **SDC commands**.
 
-#### 🧩 Implementation Steps:
+#### Implementation Steps:
 
 1. **CSV Parsing**  
    - Reads the file `openMSP430_design_constraints.csv`.  
@@ -181,9 +181,9 @@ This phase automates the **conversion of CSV-based timing constraints** into **S
 ---
 ### Author
 
-**Karthiswaran R**
-**B.E Electronics Engineering (VLSIDT)**
-**K. S. Rangasamy College of Technology**
+- Karthiswaran R
+- B.E Electronics Engineering (VLSIDT)
+- K. S. Rangasamy College of Technology
 
 ---
 ## “Automation is not just about reducing effort — it’s about building reliability, speed, and reproducibility into silicon design.”
