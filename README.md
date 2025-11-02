@@ -51,6 +51,9 @@ How to execute the synthesis suite correctly
 
 The purpose and structure of the tool
 
+<img width="1739" height="911" alt="image" src="https://github.com/user-attachments/assets/6f72ab4f-b74a-4f65-bf8d-c4ddb921582c" />
+
+
 This feature helps users (especially new ones) avoid mistakes like missing inputs or incorrect paths.
 When --help is used, VDH-FLOW displays a clear instruction banner and exits gracefully without starting the synthesis process.
 user requests for help regarding the excel sheet content and execution using --help 
@@ -58,7 +61,6 @@ user requests for help regarding the excel sheet content and execution using --h
 
 ## Creating CSV File
 <img width="1603" height="819" alt="image" src="https://github.com/user-attachments/assets/8d36eb23-e47d-4584-8e72-f23b7c435fa3" />
-
 
 
 Source the UNIX shell to tcl script by passing the csv file
