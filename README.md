@@ -67,5 +67,114 @@ Source the UNIX shell to tcl script by passing the csv file
 
 tclsh my_synth.tcl $argv[1]
 
+<img width="1729" height="807" alt="image" src="https://github.com/user-attachments/assets/6a60b0be-feed-46ed-8570-a51f0f748084" />
 
 
+### **Day 2: Automated Design Setup and Synthesis Flow Initialization**
+
+This stage focuses on **input preparation and validation** before synthesis.
+
+#### 🛠️ Tasks Performed:
+1. **Variable Extraction**  
+   - Reads the design configuration CSV file.  
+   - Extracts paths and parameters to dynamically create TCL-accessible variables.  
+   - Example:  
+     ```tcl
+     set DESIGN_NAME "openMSP430"
+     set NETLIST_DIR "./netlist/"
+     set LIB_PATH "./library/typical.lib"
+     set CONSTRAINTS_FILE "./constraints/openMSP430_design_constraints.csv"
+     ```
+
+2. **Input Validation**  
+   - Validates the existence of all paths and files defined in the CSV.  
+   - Checks for:
+     - Netlist directory
+     - Library files (.lib)
+     - Constraint files (.csv)
+   - Reports missing or invalid entries with clear TCL error handling.
+
+3. **Constraint Processing**  
+   - Reads CSV constraint file entry and prepares conversion logic to **SDC (Synopsys Design Constraints)** format.  
+   - Creates placeholders for clock definitions and IO delay constraints.
+
+4. **Netlist Parsing**  
+   - Recursively lists all **Verilog (.v)** source files within the specified netlist directory.  
+   - Produces a structured file list for Yosys synthesis.  
+     ```tcl
+     set VERILOG_FILES [glob ./netlist/*.v]
+     ```
+
+5. **Dynamic Script Generation**  
+   - Automatically generates a **Yosys-compatible TCL synthesis script (Format-2)**.  
+   - Inserts design-specific variables and synthesis steps in proper order:
+     - Read libraries  
+     - Read Verilog sources  
+     - Elaborate design  
+     - Perform synthesis  
+     - Write output reports and netlists  
+
+6. **Flow Execution**  
+   - Passes the generated TCL script to **Yosys** for synthesis execution.  
+   - Enables automated log capture and result summarization.
+
+---
+
+### **Day 3: Constraint Mapping for Yosys (openMSP430_design_constraints.csv)**
+
+This phase automates the **conversion of CSV-based timing constraints** into **SDC** format.
+
+#### 🧠 Core Learning Goals:
+- Parse and categorize data from the constraints CSV file.  
+- Create clock definitions with accurate timing parameters.  
+- Identify and process input/output signal constraints.  
+- Automatically generate valid **SDC commands**.
+
+#### 🧩 Implementation Steps:
+
+1. **CSV Parsing**  
+   - Reads the file `openMSP430_design_constraints.csv`.  
+   - Extracts constraint types such as:
+     - `CLOCK`
+     - `INPUT_DELAY`
+     - `OUTPUT_DELAY`
+     - `LATENCY`
+
+2. **Clock Definition Extraction**
+   - Identifies clock source signals and their specifications:  
+     - Period  
+     - Duty cycle  
+     - Latency  
+   - Generates SDC entries such as:  
+     ```tcl
+     create_clock -name CLK -period 10 [get_ports clk]
+     set_clock_latency -source 1.2 [get_clocks CLK]
+     ```
+
+3. **Bus Signal Detection (Regex-based)**  
+   - Parses Verilog netlists to detect bus structures like:
+     ```verilog
+     input [7:0] data_in;
+     ```
+   - Differentiates between **single-bit** and **bus-level** signals.
+
+4. **Input Delay Calculation**  
+   - Maps CSV fields to `set_input_delay` commands automatically.  
+   - Example:
+     ```tcl
+     set_input_delay 2.5 -clock [get_clocks CLK] [get_ports {data_in[*]}]
+     ```
+
+5. **Output Delay and Latency**  
+   - Generates `set_output_delay` and latency constraints for accurate timing modeling.
+
+6. **SDC Generation Output**  
+   - Final SDC file example:
+     ```
+     create_clock -name CLK -period 10 [get_ports clk]
+     set_input_delay 2.5 -clock CLK [get_ports {data_in[*]}]
+     set_output_delay 3.0 -clock CLK [get_ports {data_out[*]}]
+     set_clock_latency -source 1.2 [get_clocks CLK]
+     ```
+
+---
