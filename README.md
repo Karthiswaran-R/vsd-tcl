@@ -179,10 +179,11 @@ This phase automates the **conversion of CSV-based timing constraints** into **S
      ```
 
 ---
-###Author
+### Author
 
-Karthiswaran R
-B.E Electronics Engineering (VLSIDT)
-K. S. Rangasamy College of Technology
+**Karthiswaran R**
+**B.E Electronics Engineering (VLSIDT)**
+**K. S. Rangasamy College of Technology**
 
 ---
+## “Automation is not just about reducing effort — it’s about building reliability, speed, and reproducibility into silicon design.”
