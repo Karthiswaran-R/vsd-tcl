@@ -69,6 +69,7 @@ tclsh my_synth.tcl $argv[1]
 
 <img width="1729" height="807" alt="image" src="https://github.com/user-attachments/assets/6a60b0be-feed-46ed-8570-a51f0f748084" />
 
+--- 
 
 ### **Day 2: Automated Design Setup and Synthesis Flow Initialization**
 
@@ -176,5 +177,12 @@ This phase automates the **conversion of CSV-based timing constraints** into **S
      set_output_delay 3.0 -clock CLK [get_ports {data_out[*]}]
      set_clock_latency -source 1.2 [get_clocks CLK]
      ```
+
+---
+###Author
+
+Karthiswaran R
+B.E Electronics Engineering (VLSIDT)
+K. S. Rangasamy College of Technology
 
 ---
