@@ -138,7 +138,5 @@ A negative slack indicates a timing violation.
 
 # Final result
 
-<img width="1917" height="1069" alt="image" src="https://github.com/user-attachments/assets/dcf0f34a-cfad-4cd1-9cde-7ef340771fed" />
 
 
-<img width="1917" height="1069" alt="image" src="https://github.com/user-attachments/assets/8765e7ee-aa23-4821-b165-5fd243d190e9" />
