@@ -110,119 +110,7 @@ This stage focuses on **input preparation and validation** before synthesis.
 
 ---
 
-### **Day 3: Constraint Mapping for Yosys (openMSP430_design_constraints.csv)**
 
-This phase automates the **conversion of CSV-based timing constraints** into **SDC** format.
-
-#### Core Learning Goals:
-- Parse and categorize data from the constraints CSV file.  
-- Create clock definitions with accurate timing parameters.  
-- Identify and process input/output signal constraints.  
-- Automatically generate valid **SDC commands**.
-
-#### Implementation Steps:
-
-1. **CSV Parsing**  
-   - Reads the file `openMSP430_design_constraints.csv`.  
-   - Extracts constraint types such as:
-     - `CLOCK`
-     - `INPUT_DELAY`
-     - `OUTPUT_DELAY`
-     - `LATENCY`
-
-2. **Clock Definition Extraction**
-   - Identifies clock source signals and their specifications:  
-     - Period  
-     - Duty cycle  
-     - Latency  
-   - Generates SDC entries such as:  
-     ```tcl
-     create_clock -name CLK -period 10 [get_ports clk]
-     set_clock_latency -source 1.2 [get_clocks CLK]
-     ```
-
-3. **Bus Signal Detection (Regex-based)**  
-   - Parses Verilog netlists to detect bus structures like:
-     ```verilog
-     input [7:0] data_in;
-     ```
-   - Differentiates between **single-bit** and **bus-level** signals.
-
-4. **Input Delay Calculation**  
-   - Maps CSV fields to `set_input_delay` commands automatically.  
-   - Example:
-     ```tcl
-     set_input_delay 2.5 -clock [get_clocks CLK] [get_ports {data_in[*]}]
-     ```
-
-5. **Output Delay and Latency**  
-   - Generates `set_output_delay` and latency constraints for accurate timing modeling.
-
-6. **SDC Generation Output**  
-   - Final SDC file example:
-     ```
-     create_clock -name CLK -period 10 [get_ports clk]
-     set_input_delay 2.5 -clock CLK [get_ports {data_in[*]}]
-     set_output_delay 3.0 -clock CLK [get_ports {data_out[*]}]
-     set_clock_latency -source 1.2 [get_clocks CLK]
-     ```
-
-
-## DAY-4 : Feeding RTL Netlist and Standard Cell Library to Yosys EDA tool for Synthesis
-
-###  **Lab Objective**
-
-Day 4 extends the Day 3 flow to cover **output constraints** and **integration with the Yosys synthesis tool**.
-Here, we will finalize SDC generation and use it to synthesize an RTL design into a gate-level netlist.
-
-You will:
-
-* Add `set_output_delay` and `set_load` commands to the SDC file.
-* Understand how the SDC is consumed by synthesis tools.
-* Create an automated Yosys script (`synth.ys`) using TCL variables.
-* Execute synthesis and verify successful gate-level netlist generation.
-* Implement hierarchy checks and error-handling in TCL.
-
----
-
-### 🧠 **Conceptual Background**
-
-Synthesis is the process of converting behavioral RTL code into a structural gate-level representation using liberty models.
-By feeding the generated SDC into Yosys, you ensure that synthesis honors timing constraints.
-Day 4 bridges the gap between **functional design intent (RTL)** and **implementation design intent (timing)**.
-
-### Checking the hierarchy
-####  All the referenced modules are interlinked properly and the hierarchy is properly defined - Hierarchy PASS
-
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/4a506f81-4b73-4f77-9d5e-7bc461fc1ddd" />
-
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/b3e4f3c6-aa5e-4577-88c4-75851898346d" />
-
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/5118afa5-324a-4823-8ce9-a5eecc3a0e70" />
-
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/fbe0fb28-7f84-486a-82a7-e6090fdc3364" />
-
-## DAY-5: Converting Yosys tool's Synthesized Gate Level Output Netlist to a Format compatible with Opentimer(Open Source EDA Tool) for Timing Analysis
-
-### 🎯 **Lab Objective**
-
-Day 5 is where all components come together.
-You’ll automate the **entire design flow**:
-CSV → SDC → Yosys → OpenTimer → QoR Report.
-
-The focus is on:
-
-* Creating OpenTimer configuration files (`.conf`).
-* Running static timing analysis automatically.
-* Parsing OpenTimer timing reports to extract QoR metrics:
-
-  * WNS (Worst Negative Slack)
-  * TNS (Total Negative Slack)
-  * Setup/Hold violations
-  * Instance count & runtime
-* Formatting these metrics into readable tables and logs.
-
----
 
 
 Here, the TCL script becomes a *flow controller*, capable of:
@@ -240,22 +128,11 @@ Slack = Required_Time – Arrival_Time
 A negative slack indicates a timing violation.
 
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/886d0c4f-2fe5-4b09-8093-c9708187e602" />
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d9b845cc-4633-439a-865b-491d1372bc12" />
 
 ### Traking no of * & //// in openMSP430.synth.v
 
-<img width="806" height="289" alt="image" src="https://github.com/user-attachments/assets/b8ce99b2-1651-41b8-bd96-75265f7ece0a" />
 
-<img width="1847" height="354" alt="image" src="https://github.com/user-attachments/assets/61ddb4c5-60ad-4ed0-b014-085718945c8b" />
-
-<img width="1917" height="1069" alt="image" src="https://github.com/user-attachments/assets/3e14da56-475d-46cb-ba9c-bca16b362225" />
-
-<img width="1917" height="1069" alt="image" src="https://github.com/user-attachments/assets/649db072-9868-41b7-957b-f475beeeb5e7" />
-<img width="1917" height="1069" alt="image" src="https://github.com/user-attachments/assets/48bd4217-5e04-4e53-955b-d5cad4328896" />
-
-<img width="1917" height="1069" alt="image" src="https://github.com/user-attachments/assets/a33fb569-a992-4f02-8912-3d408a2c5754" />
 
 
 
