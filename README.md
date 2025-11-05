@@ -63,6 +63,7 @@ tclsh my_synth.tcl $argv[1]
 ### **Day 2: Automated Design Setup and Synthesis Flow Initialization**
 
 This stage focuses on **input preparation and validation** before synthesis.
+<img width="1742" height="888" alt="image" src="https://github.com/user-attachments/assets/d889dd4f-65b8-4441-8704-4f4881bebb06" />
 
 ####  Tasks Performed :
 1. **Variable Extraction**  
@@ -108,10 +109,14 @@ This stage focuses on **input preparation and validation** before synthesis.
    - Passes the generated TCL script to **Yosys** for synthesis execution.  
    - Enables automated log capture and result summarization.
 
+<img width="1735" height="877" alt="Screenshot 2025-11-05 145542" src="https://github.com/user-attachments/assets/9831709f-a436-4436-8012-5198e3188f77" />
+
+<img width="1733" height="885" alt="image" src="https://github.com/user-attachments/assets/15ca2f8f-5873-4777-a73e-b303593dd578" />
+
+<img width="1751" height="892" alt="image" src="https://github.com/user-attachments/assets/efa1046a-0aa5-4878-a3ca-bc3314ea541d" />
+
 ---
-
-
-
+..................................................................................................................................................................................................................................................................................
 
 Here, the TCL script becomes a *flow controller*, capable of:
 
@@ -127,6 +132,7 @@ Slack = Required_Time – Arrival_Time
 
 A negative slack indicates a timing violation.
 
+<img width="1743" height="885" alt="image" src="https://github.com/user-attachments/assets/9073903d-057f-4778-88fd-46a99e81cc38" />
 
 
 
