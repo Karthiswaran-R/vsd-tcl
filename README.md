@@ -123,13 +123,13 @@ Automate the generation of Synopsys Design Constraints (SDC) from openMSP430_des
 
 ### Key Steps:
 
-CSV Parsing
+* CSV Parsing
 
-Read the CSV file containing timing constraints for clocks, inputs, and outputs.
+* Read the CSV file containing timing constraints for clocks, inputs, and outputs.
 
-Categorize rows based on type: CLOCKS, INPUTS, OUTPUTS.
+* Categorize rows based on type: CLOCKS, INPUTS, OUTPUTS.
 
-Identify single-bit signals vs. multi-bit buses using regular expressions.
+* Identify single-bit signals vs. multi-bit buses using regular expressions.
 
 Clock Definition
 
