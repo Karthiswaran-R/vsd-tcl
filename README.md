@@ -60,7 +60,7 @@ tclsh my_synth.tcl $argv[1]
 
 <img width="1729" height="807" alt="Screenshot 2025-11-02 212550" src="https://github.com/user-attachments/assets/7d828933-410c-415f-86c1-5fe6a8c1554d" />
 
-### **Day 2: Automated Design Setup and Synthesis Flow Initialization**
+## **Day 2: Automated Design Setup and Synthesis Flow Initialization**
 
 This stage focuses on **input preparation and validation** before synthesis.
 <img width="1742" height="888" alt="image" src="https://github.com/user-attachments/assets/d889dd4f-65b8-4441-8704-4f4881bebb06" />
@@ -116,12 +116,12 @@ This stage focuses on **input preparation and validation** before synthesis.
 <img width="1751" height="892" alt="image" src="https://github.com/user-attachments/assets/efa1046a-0aa5-4878-a3ca-bc3314ea541d" />
 
 ---
-### **Day 3: Mapping CSV Constraints to SDC for Yosys**
+## **Day 3: Mapping CSV Constraints to SDC for Yosys**
 
-# Objective: 
+### Objective: 
 Automate the generation of Synopsys Design Constraints (SDC) from openMSP430_design_constraints.csv for use in synthesis.
 
-# Key Steps:
+### Key Steps:
 
 CSV Parsing
 
@@ -135,13 +135,13 @@ Clock Definition
 
 Extract clock period, duty cycle, and latency from CSV.
 
-# Generate SDC clock commands:
+### Generate SDC clock commands:
 
 create_clock -period <T> -waveform {0 <T/2>} [get_ports <clk_port>]
 set_clock_latency -source <value> [get_clocks <clk_name>]
 
 
-# Input / Output Constraints
+### Input / Output Constraints
 
 Generate SDC commands for input delays and output delays:
 
@@ -151,7 +151,7 @@ set_output_delay -clock <clk_name> <delay_value> [get_ports <signal_name>]
 
 Handle bus signals ([0:7]) with wildcard expansion: [get_ports my_bus[*]].
 
-# Automation Highlights
+### Automation Highlights
 
 Store clocks and signals in structured arrays or dictionaries.
 
@@ -159,6 +159,100 @@ Loop over all CSV entries and generate corresponding SDC lines automatically.
 
 Validate existence of each signal in the RTL netlist before SDC generation.
 
+---
+
+## **Day 4: Feeding RTL Netlist & Standard Cell Library to Yosys**
+
+### Objective: 
+Synthesize the openMSP430 RTL using Yosys while respecting timing constraints.
+
+### Key Steps:
+
+Prepare RTL and Library
+
+Read RTL Verilog file: openMSP430.sv.
+
+Read standard cell library (cells.lib) to map gates to timing and area.
+
+Integrate Timing Constraints
+
+Include the SDC generated in Day 3:
+
+read_sdc openMSP430.sdc
+
+
+Synthesis Script (synth.ys)
+
+read_verilog openMSP430.sv
+read_liberty -lib cells.lib
+synth -top top_module
+write_verilog openMSP430.synth.v
+
+
+Generates a gate-level netlist that honors all SDC constraints.
+
+Hierarchy & Error Checks
+
+Ensure all modules are properly instantiated.
+
+Perform hierarchy check:
+
+check_hierarchy
+
+
+Detect missing or unrecognized signals, generating clear error messages.
+
+Output Constraints
+
+Add set_output_delay and set_load commands automatically based on CSV or design specifications.
+
+## **Day 5: Timing Analysis with OpenTimer**
+
+### Objective: 
+Perform automated static timing analysis (STA) using OpenTimer and generate a Quality of Results (QoR) report.
+
+### Key Steps:
+
+Prepare OpenTimer Configuration
+
+Use generated gate-level netlist (openMSP430.synth.v), SDC (openMSP430.sdc), and standard cell library (cells.lib).
+
+Generate OpenTimer .conf file to define analysis parameters.
+
+### Run STA
+
+opentimer -lib cells.lib -verilog openMSP430.synth.v -sdc openMSP430.sdc -report timer_report.txt
+
+
+### Parse QoR Metrics
+
+Extract critical metrics:
+
+WNS (Worst Negative Slack)
+
+TNS (Total Negative Slack)
+
+Setup / Hold Violations
+
+Instance Count
+
+Runtime
+
+Automate extraction using TCL or Python scripts for logs and readable tables.
+
+### Slack Analysis
+
+Slack = Required_Time − Arrival_Time
+
+Negative slack indicates timing violations that must be corrected.
+
+### Flow Automation
+
+Master TCL script orchestrates:
+
+CSV → SDC → Yosys → OpenTimer → QoR metrics
+
+Handles errors, dependencies, and logs all outputs.
 
 Here, the TCL script becomes a *flow controller*, capable of:
 
