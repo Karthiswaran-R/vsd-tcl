@@ -306,4 +306,4 @@ _B.E Electronics Engineering (VLSIDT)_
 **VLSI Design Hub**  
 
 **GitHub:** [https://github.com/Karthiswaran-R](https://github.com/Karthiswaran-R)  
-**Website:** [https://vlsidesginhub.netlify.app/linux](https://vlsidesginhub.netlify.app/linux)
+**Website:** [https://vlsidesginhub.netlify.app/linux](https://vlsidesignhub.netlify.app/)
