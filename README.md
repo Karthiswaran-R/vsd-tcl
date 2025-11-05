@@ -136,18 +136,18 @@ Clock Definition
 Extract clock period, duty cycle, and latency from CSV.
 
 ### Generate SDC clock commands:
-
+```bash
 create_clock -period <T> -waveform {0 <T/2>} [get_ports <clk_port>]
 set_clock_latency -source <value> [get_clocks <clk_name>]
-
+```
 
 ### Input / Output Constraints
 
 Generate SDC commands for input delays and output delays:
-
+```bash
 set_input_delay -clock <clk_name> <delay_value> [get_ports <signal_name>]
 set_output_delay -clock <clk_name> <delay_value> [get_ports <signal_name>]
-
+```
 
 Handle bus signals ([0:7]) with wildcard expansion: [get_ports my_bus[*]].
 
@@ -182,12 +182,12 @@ Synthesize the openMSP430 RTL using Yosys while respecting timing constraints.
 
 
 Synthesis Script (synth.ys)
-
+```bash
 read_verilog openMSP430.sv
 read_liberty -lib cells.lib
 synth -top top_module
 write_verilog openMSP430.synth.v
-
+```
 
 Generates a gate-level netlist that honors all SDC constraints.
 
@@ -228,30 +228,30 @@ opentimer -lib cells.lib -verilog openMSP430.synth.v -sdc openMSP430.sdc -report
 
 Extract critical metrics:
 
-WNS (Worst Negative Slack)
+* WNS (Worst Negative Slack)
 
-TNS (Total Negative Slack)
+* TNS (Total Negative Slack)
 
-Setup / Hold Violations
+* Setup / Hold Violations
 
-Instance Count
+* Instance Count
 
 Runtime
 
 Automate extraction using TCL or Python scripts for logs and readable tables.
 
 ### Slack Analysis
-
+```bash
 Slack = Required_Time − Arrival_Time
-
+```
 Negative slack indicates timing violations that must be corrected.
 
 ### Flow Automation
 
 Master TCL script orchestrates:
-
+```bash
 CSV → SDC → Yosys → OpenTimer → QoR metrics
-
+```
 Handles errors, dependencies, and logs all outputs.
 
 Here, the TCL script becomes a *flow controller*, capable of:
