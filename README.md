@@ -135,6 +135,8 @@ Clock Definition
 
 Extract clock period, duty cycle, and latency from CSV.
 
+<img width="1707" height="872" alt="image" src="https://github.com/user-attachments/assets/a50fded3-8d07-4281-8953-fc7bfca846dd" />
+
 ### Generate SDC clock commands:
 ```bash
 create_clock -period <T> -waveform {0 <T/2>} [get_ports <clk_port>]
@@ -151,6 +153,7 @@ set_output_delay -clock <clk_name> <delay_value> [get_ports <signal_name>]
 
 Handle bus signals ([0:7]) with wildcard expansion: [get_ports my_bus[*]].
 
+
 ### Automation Highlights
 
 Store clocks and signals in structured arrays or dictionaries.
@@ -158,6 +161,8 @@ Store clocks and signals in structured arrays or dictionaries.
 Loop over all CSV entries and generate corresponding SDC lines automatically.
 
 Validate existence of each signal in the RTL netlist before SDC generation.
+
+<img width="1124" height="431" alt="Screenshot 2025-11-05 160211" src="https://github.com/user-attachments/assets/8ffcf635-9df4-4369-8aaa-5c8762bfbabc" />
 
 ---
 
@@ -188,6 +193,9 @@ read_liberty -lib cells.lib
 synth -top top_module
 write_verilog openMSP430.synth.v
 ```
+### Synthesised RTL
+
+ <img width="1740" height="889" alt="image" src="https://github.com/user-attachments/assets/feebc2ad-0d56-4d39-ba47-0d688dce3492" />
 
 Generates a gate-level netlist that honors all SDC constraints.
 
@@ -199,12 +207,13 @@ Perform hierarchy check:
 
 check_hierarchy
 
-
 Detect missing or unrecognized signals, generating clear error messages.
 
 Output Constraints
 
 Add set_output_delay and set_load commands automatically based on CSV or design specifications.
+
+<img width="882" height="737" alt="image" src="https://github.com/user-attachments/assets/1ed61a11-f7eb-4e26-8ca2-805c2b20c752" />
 
 ## **Day 5: Timing Analysis with OpenTimer**
 
@@ -223,6 +232,7 @@ Perform automated static timing analysis (STA) using OpenTimer and generate a Qu
 
 opentimer -lib cells.lib -verilog openMSP430.synth.v -sdc openMSP430.sdc -report timer_report.txt
 
+<img width="1717" height="889" alt="image" src="https://github.com/user-attachments/assets/5a713498-4fe5-49a9-8fbe-148287361fcb" />
 
 ### Parse QoR Metrics
 
@@ -260,6 +270,8 @@ Here, the TCL script becomes a *flow controller*, capable of:
 * Managing data dependencies between stages.
 * Evaluating timing performance quantitatively.
 
+<img width="1738" height="883" alt="Screenshot 2025-11-05 211843" src="https://github.com/user-attachments/assets/bc4d4835-0474-4bda-ae7e-271803e500b3" />
+
 **OpenTimer** performs the timing graph analysis using liberty, Verilog, and SDC inputs, applying standard STA principles:
 
 ```bash
@@ -268,17 +280,30 @@ Slack = Required_Time – Arrival_Time
 
 A negative slack indicates a timing violation.
 
-<img width="1743" height="885" alt="image" src="https://github.com/user-attachments/assets/9073903d-057f-4778-88fd-46a99e81cc38" />
+<img width="1738" height="883" alt="Screenshot 2025-11-05 211843" src="https://github.com/user-attachments/assets/cc8db66d-5287-4372-a062-c938b035e852" />
 
+## Final result
 
+<img width="1740" height="889" alt="Screenshot 2025-11-05 214910" src="https://github.com/user-attachments/assets/bf30ca31-6f12-4366-878b-352ff1f24958" />
+<img width="882" height="737" alt="Screenshot 2025-11-05 215214" src="https://github.com/user-attachments/assets/b210d02e-d512-4f94-8ac4-b1152ee2a8d5" />
+<img width="1717" height="889" alt="Screenshot 2025-11-05 215509" src="https://github.com/user-attachments/assets/89ea2b43-053e-4c3d-9ad5-2a78f324bec5" />
+<img width="1744" height="394" alt="Screenshot 2025-11-05 215827" src="https://github.com/user-attachments/assets/21460840-b48e-44ad-b007-e486d3175c3e" />
+<img width="1730" height="896" alt="Screenshot 2025-11-05 215900" src="https://github.com/user-attachments/assets/9e65e333-be6c-468c-8d14-e4ddc889b627" />
 
-### Traking no of * & //// in openMSP430.synth.v
+---
+## Conclusion
 
+This project demonstrates how TCL scripting bridges design data and EDA automation, forming a scalable and reusable infrastructure for open-source VLSI flows.
 
+**“Automation is the foundation of innovation in silicon design.”**
 
+---
 
+##  Author
 
-# Final result
+**Karthiswaran R**  
+_B.E Electronics Engineering (VLSIDT)_  
+**VLSI Design Hub**  
 
-
-
+**GitHub:** [https://github.com/Karthiswaran-R](https://github.com/Karthiswaran-R)  
+**Website:** [https://vlsidesginhub.netlify.app/linux](https://vlsidesginhub.netlify.app/linux)
