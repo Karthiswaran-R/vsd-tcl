@@ -1,0 +1,78 @@
+#!/bin/tcsh -f
+
+echo "-------------------------------------------------------------------------------------------------------------------------------------------------\n"
+echo "-\t ****                  ****   *************        ***        ***  ************  ***              ****      ***                  ***    -"
+echo "-\t  ****                ****    ***************      ***        ***  ************  ***             ******     ***                  ***    -"
+echo "-\t   ****              ****     ****       *****     ***        ***  ***           ***            ********    ***                  ***    -"
+echo "-\t    ****            ****      ****         ****    ***        ***  ***           ***           ***    ***   ***        *         ***    -"
+echo "-\t     ****          ****       ****          ****   ***        ***  ***           ***           ***    ***   ***       ***        ***    -"
+echo "-\t      ****        ****        ****           ****  **************  ************  ***           ***    ***   ***      *****       ***    -"
+echo "-\t       ****      ****         ****            ***  **************  ************  ***           ***    ***   ***     *******      ***    -"
+echo "-\t        ****    ****          ****            ***  ***        ***  ***           ***           ***    ***   ***    *********     ***    -"
+echo "-\t         ****  ****           ****           ****  ***        ***  ***           ***           ***    ***   ***   ***********    ***    -"
+echo "-\t          ********            ****          ****   ***        ***  ***           ***           ***    ***   ***  ****      ***   ***    -"
+echo "-\t           ******             ****         ****    ***        ***  ***           ***           **********   ********        ********    -"
+echo "-\t            ****              ****************     ***        ***  ***           *************  ********    *******          *******    -"
+echo "-\t             **               ***************      ***        ***  ***           *************    ****      ******            ******    -"
+echo "-\n-------------------------------------------------------------------------------------------------------------------------------------------------"
+echo "-\n-	       An unique User Interface (UI) that takes RTL netlist & SDC constraints as input, and generates synthesized netlist               -"
+echo "- 		and pre-layout timing report as output. It uses Yosys for synthesis and OpenTimer for STA.                                      -"
+echo "-\n-                           VDH-FLOW | RTL Synthesis & Automation Suite                                                                         -" 
+echo "-                           Developed by KARTHISWARAN R | VLSI Design Hub                                                                       -" 
+echo "-\n-------------------------------------------------------------------------------------------------------------------------------------------------"
+echo "-\n[INFO] : Tool Initialization..."
+echo "-------------------------------------------------------------------------------------------------------------------------------------------------\n"
+
+# ------------------------------------------------------------
+#               Command-Line Argument Handling
+# ------------------------------------------------------------
+
+if ($#argv != 1) then
+    echo "vdh-flow Info: Please provide the CSV file."
+    echo "USAGE: ./vdh-flow <csv file>"
+    exit 1
+endif
+
+set file = "$argv[1]"
+
+# ------------------------------------------------------------
+#                   Help Menu 
+# ------------------------------------------------------------
+if ($file == "-h") then
+    echo "[INFO] : USAGE - ./vdh-flow <csv file>"
+    echo "  CSV file must contain the following keywords:"
+    echo "  ----------------------------------------------------------------------------------"
+    echo "   <Design Name>         : Name of the top-level RTL module"
+    echo "   <Output Directory>    : Directory where synthesis and reports are stored"
+    echo "   <Netlist Directory>   : Directory where RTL files are located"
+    echo "   <Early Library Path>  : Path to the early cell library (.lib)"
+    echo "   <Late Library Path>   : Path to the late cell library (.lib)"
+    echo "   <Constraints File>    : Path to SDC constraints file"
+    echo "  ----------------------------------------------------------------------------------"
+    echo "Example: ./vdh-flow design_setup.csv"
+    exit 0
+endif
+
+if (! -f "$file") then
+    echo "[Error] File '$file' not found!"
+    exit 1
+endif
+
+# ------------------------------------------------------------
+#                   Launch TCL Synthesis
+# ------------------------------------------------------------
+echo "Starting VDH-Flow..."
+echo "Reading configuration from: $file"
+
+tclsh vdh-flow.tcl "$file"
+if ($status != 0) then
+    echo "[Error] TCL synthesis failed!"
+    exit 1
+endif
+
+echo "Flow completed successfully!"
+echo "------------------------------------------------------------"
+echo "Generated outputs available in the configured output directory."
+echo "------------------------------------------------------------"
+echo "Thank you for using vdh-flow by VLSI Design Hub!"
+
