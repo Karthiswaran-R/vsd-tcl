@@ -262,7 +262,7 @@ Here, the TCL script becomes a *flow controller*, capable of:
 
 **OpenTimer** performs the timing graph analysis using liberty, Verilog, and SDC inputs, applying standard STA principles:
 
-```
+```bash
 Slack = Required_Time – Arrival_Time
 ```
 
