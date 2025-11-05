@@ -168,17 +168,17 @@ Synthesize the openMSP430 RTL using Yosys while respecting timing constraints.
 
 ### Key Steps:
 
-Prepare RTL and Library
+* Prepare RTL and Library
 
-Read RTL Verilog file: openMSP430.sv.
+* Read RTL Verilog file: openMSP430.sv.
 
-Read standard cell library (cells.lib) to map gates to timing and area.
+* Read standard cell library (cells.lib) to map gates to timing and area.
 
-Integrate Timing Constraints
+* Integrate Timing Constraints
 
-Include the SDC generated in Day 3:
+* Include the SDC generated in Day 3:
 
-read_sdc openMSP430.sdc
+* read_sdc openMSP430.sdc
 
 
 Synthesis Script (synth.ys)
@@ -213,11 +213,11 @@ Perform automated static timing analysis (STA) using OpenTimer and generate a Qu
 
 ### Key Steps:
 
-Prepare OpenTimer Configuration
+* Prepare OpenTimer Configuration
 
-Use generated gate-level netlist (openMSP430.synth.v), SDC (openMSP430.sdc), and standard cell library (cells.lib).
+* Use generated gate-level netlist (openMSP430.synth.v), SDC (openMSP430.sdc), and standard cell library (cells.lib).
 
-Generate OpenTimer .conf file to define analysis parameters.
+* Generate OpenTimer .conf file to define analysis parameters.
 
 ### Run STA
 
