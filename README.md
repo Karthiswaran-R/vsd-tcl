@@ -116,7 +116,49 @@ This stage focuses on **input preparation and validation** before synthesis.
 <img width="1751" height="892" alt="image" src="https://github.com/user-attachments/assets/efa1046a-0aa5-4878-a3ca-bc3314ea541d" />
 
 ---
-..................................................................................................................................................................................................................................................................................
+### **Day 3: Mapping CSV Constraints to SDC for Yosys**
+
+# Objective: 
+Automate the generation of Synopsys Design Constraints (SDC) from openMSP430_design_constraints.csv for use in synthesis.
+
+# Key Steps:
+
+CSV Parsing
+
+Read the CSV file containing timing constraints for clocks, inputs, and outputs.
+
+Categorize rows based on type: CLOCKS, INPUTS, OUTPUTS.
+
+Identify single-bit signals vs. multi-bit buses using regular expressions.
+
+Clock Definition
+
+Extract clock period, duty cycle, and latency from CSV.
+
+# Generate SDC clock commands:
+
+create_clock -period <T> -waveform {0 <T/2>} [get_ports <clk_port>]
+set_clock_latency -source <value> [get_clocks <clk_name>]
+
+
+# Input / Output Constraints
+
+Generate SDC commands for input delays and output delays:
+
+set_input_delay -clock <clk_name> <delay_value> [get_ports <signal_name>]
+set_output_delay -clock <clk_name> <delay_value> [get_ports <signal_name>]
+
+
+Handle bus signals ([0:7]) with wildcard expansion: [get_ports my_bus[*]].
+
+# Automation Highlights
+
+Store clocks and signals in structured arrays or dictionaries.
+
+Loop over all CSV entries and generate corresponding SDC lines automatically.
+
+Validate existence of each signal in the RTL netlist before SDC generation.
+
 
 Here, the TCL script becomes a *flow controller*, capable of:
 
