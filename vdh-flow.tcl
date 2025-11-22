@@ -19,12 +19,12 @@ puts "${CYAN}===================================================================
 #----- Checks whether vdh-flow usage is correct or not -----#
 set enable_prelayout_timing 1
 set working_dir [exec pwd]
-set monksynth_array_length [llength [split [lindex $argv 0] .]]
-set input [lindex [split [lindex $argv 0] .] $monksynth_array_length-1]
+set vdh_flow_array_length [llength [split [lindex $argv 0] .]]
+set input [lindex [split [lindex $argv 0] .] $vdh_flow_array_length-1]
 
 if {![regexp {^csv} $input] || $argc!=1 } {
-	puts "MonkSynth Error: Incorrect usage."
-	puts "Usage: ./monksynth <.csv>"
+	puts "vdf-flow Error: Incorrect usage."
+	puts "Usage: ./vdh-flow <.csv>"
 	puts "Where <.csv> contains required design configuration."
 	exit
 } else {
@@ -42,7 +42,7 @@ if {![regexp {^csv} $input] || $argc!=1 } {
 	set i 0
 
 	while {$i < $num_of_rows} {
-		 puts "\nMonkSynth Info: Setting $my_arr(0,$i) as '$my_arr(1,$i)'"
+		 puts "\nvdh-flow Info: Setting $my_arr(0,$i) as '$my_arr(1,$i)'"
 		 if {$i == 0} {
 			 set [string map {" " ""} $my_arr(0,$i)] $my_arr(1,$i)
 		 } else {
@@ -87,7 +87,7 @@ if {! [file isdirectory $NetlistDirectory]} {
 	puts "\nvdh-flow Error: RTL netlist directory not found at $NetlistDirectory. Exiting..."
 	exit	
 } else {
-	puts "\nMonkSynth Info: RTL netlist directory found at $NetlistDirectory"
+	puts "\nvdh-flow Info: RTL netlist directory found at $NetlistDirectory"
 }
 
 if {! [file exists $ConstraintsFile]} {
@@ -149,7 +149,7 @@ set clock_late_fall_slew_start [lindex [lindex [constraints search rect $clock_s
 set sdc_file [open $OutputDirectory/$DesignName.sdc "w"]
 set i [expr {$clock_start+1}]
 set end_of_ports [expr {$input_ports_start-1}]
-puts "\nInfo-SDC: Working on clock constraints....."
+puts "\nvdh-flow Info-SDC: Working on clock constraints....."
 while { $i < $end_of_ports } {
         puts -nonewline $sdc_file "\ncreate_clock -name [constraints get cell 0 $i] -period [constraints get cell 1 $i] -waveform \{0 [expr {[constraints get cell 1 $i]*[constraints get cell 2 $i]/100}]\} \[get_ports [constraints get cell 0 $i]\]"
 	puts -nonewline $sdc_file "\nset_clock_transition -rise -min [constraints get cell $clock_early_rise_slew_start $i] \[get_clocks [constraints get cell 0 $i]\]"
@@ -176,8 +176,8 @@ set input_late_fall_slew_start [lindex [lindex [constraints search rect $clock_s
 set related_clock [lindex [lindex [constraints search rect $clock_start_column $input_ports_start [expr {$number_of_columns-1}] [expr {$output_ports_start-1}]  clocks] 0 ] 0]
 set i [expr {$input_ports_start+1}]
 set end_of_ports [expr {$output_ports_start-1}]
-puts "\nInfo-SDC: Working on IO constraints....."
-puts "\nInfo-SDC: Categorizing input ports as bits and bussed"
+puts "\nvdh-flow Info-SDC: Working on IO constraints....."
+puts "\nvdh-flow Info-SDC: Categorizing input ports as bits and bussed"
 set netlist [glob -dir $NetlistDirectory *.v]
 set tmp_file [open /tmp/1 w]
 foreach f $netlist {
@@ -253,7 +253,7 @@ puts -nonewline $sdc_file "\nset_input_transition -clock $clkSpec -max -fall -so
 # Increment loop counter
 set i [expr {$i + 1}]
 # ----------------------------
-# End MonkSynth Block
+# End vdh-flow Block
 # ----------------------------
 
 
@@ -309,14 +309,14 @@ if {$count > 2} {
 close $tmp2_file
 close $sdc_file
 
-puts "\nInfo: SDC created. Please use constraints in path  $OutputDirectory/$DesignName.sdc"
+puts "\nvdh-flow Info: SDC created. Please use constraints in path  $OutputDirectory/$DesignName.sdc"
 
 
 #--------------------------- Hierarchy check --------------------------------#
 #--------------------------- Hierarchy check --------------------------------#
 
 
-puts "\nInfo: Creating hierarchy check script to be used by Yosys"
+puts "\nvdh-flow Info: Creating hierarchy check script to be used by Yosys"
 set data "read_liberty -lib -ignore_miss_dir -setattr blackbox ${LateLibraryPath}"
 puts "data is \"$data\""
 set filename "$DesignName.hier.ys"
@@ -347,21 +347,21 @@ if { [catch { exec yosys -s $OutputDirectory/$DesignName.hier.ys >& $OutputDirec
 	while {[gets $fid line] != -1} {
 		incr count [regexp -all -- $pattern $line]
 		if {[regexp -all -- $pattern $line]} {
-			puts "\nError: module [lindex $line 2] is not part of design $DesignName. Please correct RTL in the path '$NetlistDirectory'" 
-			puts "\nInfo: Hierarchy check FAIL"
+			puts "\nvdh-flow Error: module [lindex $line 2] is not part of design $DesignName. Please correct RTL in the path '$NetlistDirectory'" 
+			puts "\nvdh-flow Info: Hierarchy check FAIL"
 		}
 	}
 	close $fid
 } else {
-	puts "\nInfo: Hierarchy check PASS"
+	puts "\nvdh-flow Info: Hierarchy check PASS"
 }
-puts "\nInfo: Please find hierarchy check details in [file normalize $OutputDirectory/$DesignName.hierarchy_check.log] for more info"
+puts "\nvdh-flow Info: Please find hierarchy check details in [file normalize $OutputDirectory/$DesignName.hierarchy_check.log] for more info"
 
 cd $working_dir 
 
 #------------------------- Main synthesis script-----------------------------#
 
-puts "\nInfo: Creating main synthesis script to be used by Yosys"
+puts "\nvdh-flow Info: Creating main synthesis script to be used by Yosys"
 set data "read_liberty -lib -ignore_miss_dir -setattr blackbox ${LateLibraryPath}"
 puts "data is \"$data\""
 set filename "$DesignName.ys"
@@ -387,21 +387,21 @@ puts -nonewline $fileId "\nflatten"
 puts -nonewline $fileId "\nclean -purge\niopadmap -outpad BUFX2 A:Y -bits\nopt\nclean"
 puts -nonewline $fileId "\nwrite_verilog $OutputDirectory/$DesignName.synth.v"
 close $fileId
-puts "\nInfo: Synthesis script created and can be accessed from path $OutputDirectory/$DesignName.ys"
+puts "\nvdh-flow Info: Synthesis script created and can be accessed from path $OutputDirectory/$DesignName.ys"
 
-puts "\nInfo: Running synthesis........"
+puts "\nvdh-flow Info: Running synthesis........"
 
 #-------------------- Run synthesis script using yosys ----------------------#
 
 
 
 if {[catch { exec yosys -s $OutputDirectory/$DesignName.ys >& $OutputDirectory/$DesignName.synthesis.log} msg]} {
-	puts "\nError: Synthesis failed due to errors. Please refer to log $OutputDirectory/$DesignName.synthesis.log for errors"
+	puts "\nvdh-flow Error: Synthesis failed due to errors. Please refer to log $OutputDirectory/$DesignName.synthesis.log for errors"
 	exit
 } else {
-	puts "\nInfo: Synthesis finished successfully"
+	puts "\nvdh-flow Info: Synthesis finished successfully"
 }
-puts "\nInfo: Please refer to log $OutputDirectory/$DesignName.synthesis.log"
+puts "\nvdh-flow Info: Please refer to log $OutputDirectory/$DesignName.synthesis.log"
 
 set fileid [open /tmp/1 "w"]
 puts -nonewline $fileid [exec grep -v -w "*" $OutputDirectory/$DesignName.synth.v]
@@ -420,7 +420,7 @@ while {[gets $fid line] != -1} {
 close $fid
 close $output
 
-puts "\nInfo : Please find the final synthesized netlist for $DesignName at below path. You cann use this netlist for STA or PNR"
+puts "\nvdh-flow Info : Please find the final synthesized netlist for $DesignName at below path. You cann use this netlist for STA or PNR"
 puts "$OutputDirectory/$DesignName.final.synth.v"
 #------------------------- Edit synth.v to be usable by Opentimer-----------------------------#
 
@@ -440,11 +440,11 @@ set fid [open $filename r]
 close $fid
 close $output
 
-puts "\nInfo: Please find the synthesized netlist for $DesignName at below path. You can use this netlist for STA or PNR"
+puts "\nvdh-flow Info: Please find the synthesized netlist for $DesignName at below path. You can use this netlist for STA or PNR"
 puts "\n$OutputDirectory/$DesignName.final.synth.v"
 
-puts "\nInfo: Timing Analysis Started...."
-puts "\nInfo: Initializing number of threads, libraries, sdc, verilog netlist path..."
+puts "\nvdh-flow Info: Timing Analysis Started...."
+puts "\nvdh-flow Info: Initializing number of threads, libraries, sdc, verilog netlist path..."
 source procs/reopenStdout.proc
 source procs/set_num_threads.proc
 reopenStdout $OutputDirectory/$DesignName.conf
@@ -465,7 +465,7 @@ read_sdc $OutputDirectory/$DesignName.sdc
 reopenStdout /dev/tty
 
 if {$enable_prelayout_timing == 1} {
-	puts "\nInfo: enable_prelayout_timing is $enable_prelayout_timing. Enabling zero-wire load parasitics"
+	puts "\nvdh-flow Info: enable_prelayout_timing is $enable_prelayout_timing. Enabling zero-wire load parasitics"
 	set spef_file [open $OutputDirectory/$DesignName.spef w]
 puts $spef_file "*SPEF \"IEEE 1481-1998\" " 
 puts $spef_file "*DESIGN \"$DesignName\" " 
@@ -495,8 +495,8 @@ close $conf_file
 
 set time_elapsed_in_us [time {exec /home/vsduser/OpenTimer-1.0.5/bin/OpenTimer < $OutputDirectory/$DesignName.conf >& $OutputDirectory/$DesignName.results}]
 set time_elapsed_in_sec "[expr {[lindex $time_elapsed_in_us 0]/100000}] sec"
-puts "\nInfo: STA finished in $time_elapsed_in_sec seconds"
-puts "\nInfo: Refer to $OutputDirectory/$DesignName.results for warning and errors"
+puts "\nvdh-flow Info: STA finished in $time_elapsed_in_sec seconds"
+puts "\nvdh-flow Info: Refer to $OutputDirectory/$DesignName.results for warning and errors"
 
 puts "tcl_precision is $tcl_precision"
 #return
