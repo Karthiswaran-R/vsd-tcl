@@ -303,7 +303,6 @@ This project demonstrates how TCL scripting bridges design data and EDA automati
 
 **Karthiswaran R**  
 _B.E Electronics Engineering (VLSIDT)_  
-**VLSI Design Hub**  
+**K. S. Rangasamy College of Technology**  
 
 **GitHub:** [https://github.com/Karthiswaran-R](https://github.com/Karthiswaran-R)  
-**Website:** [https://vlsidesginhub.netlify.app/linux](https://vlsidesignhub.netlify.app/)
